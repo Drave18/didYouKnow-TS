@@ -17,3 +17,7 @@ A modern web application for sharing and discovering interesting facts across va
 - HTML5 & CSS3
 - Vite (Build tool)
 - Supabase (Backend as a Service)
+
+## TO DO
+- [ ] Pagination
+- [ ] Cleaner code
