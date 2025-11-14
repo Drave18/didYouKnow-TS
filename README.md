@@ -18,6 +18,6 @@ A modern web application for sharing and discovering interesting facts across va
 - Vite (Build tool)
 - Supabase (Backend as a Service)
 
-##TO DO
+## TO DO
 - [ ] Pagination
 - [ ] Cleaner code
