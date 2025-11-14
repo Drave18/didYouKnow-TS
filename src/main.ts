@@ -18,6 +18,10 @@ if (loader instanceof HTMLDivElement) {
   }
 }
 
+
+
+
+
 //Event delegation for avoiding redundant code
 factSection.addEventListener("click", (event: MouseEvent) => {
   const target = event.target as HTMLElement;
@@ -29,39 +33,14 @@ factSection.addEventListener("click", (event: MouseEvent) => {
 
   const id = Number(factEl.dataset.id);
   const indexToEdit = facts.findIndex(fact => fact.id === id)
-  if (hasVoted(id)) {
-    alert("You have already voted")
-    return
-  };
-  if (target.matches(".facts-item-reactions-positive")) {
+  
+  if (target.closest(".facts-item-reactions-positive")) {
     console.log("Pressed liked fact:", id);
     console.log("The index to edit is: ", indexToEdit)
-    //Updating the database, local array, DOM and local storage
-    if (indexToEdit !== -1) {
-      updateFact(id, "positive", facts[indexToEdit].votes_positive)
-      facts[indexToEdit].votes_positive += 1
-      console.log(facts)
-      const votesText = votesContainer?.querySelector("p");
-      if (votesText) {
-        votesText.textContent = String(Number(votesText.textContent) + 1);
-      }
-      localStorage.setItem(`voted-${id}`, "true");
-    }
-
-
-  } else if (target.matches(".facts-item-negative")) {
+    handleVote(id, "positive", indexToEdit, votesContainer);
+  } else if (target.closest(".facts-item-negative")) {
     console.log("Pressed negative fact:", id);
-    //Updating the database and local array
-    if (indexToEdit !== -1) {
-      updateFact(id, "negative", facts[indexToEdit].votes_negative)
-      facts[indexToEdit].votes_negative += 1
-      console.log(facts)
-      const votesText = votesContainer?.querySelector("p");
-      if (votesText) {
-        votesText.textContent = String(Number(votesText.textContent) + 1);
-      }
-      localStorage.setItem(`voted-${id}`, "true");
-    }
+    handleVote(id, "negative", indexToEdit, votesContainer);
   }
 })
 
@@ -120,12 +99,16 @@ function createFactElement(fact: Fact): void {
           <p class="facts-item-paragraph">${fact.text}</p>
             <div class="facts-item-reactions">
               <div class="facts-item-reactions-votes positive">
-                <button class="facts-item-reactions-positive">👍</button>
-                <p style="display:inline-block">${fact.votes_positive}</p>
+                <button class="facts-item-reactions-positive"><span class="material-symbols-outlined">
+thumb_up
+</span></button>
+                <p>${fact.votes_positive}</p>
               </div>
               <div class="facts-item-reactions-votes negative">
-                <button class="facts-item-negative">👎</button>
-                <p style="display:inline-block">${fact.votes_negative}</p>
+                <button class="facts-item-negative"><span class="material-symbols-outlined">
+thumb_down
+</span></button>
+                <p>${fact.votes_negative}</p>
               </div>
             </div>
     </div>
@@ -177,8 +160,54 @@ async function updateFact(id:number, type:"positive"|"negative", currentVotes:nu
   }
 }
 
+function showToast(message: string): void {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  // Trigger fade-in animation
+  setTimeout(() => {
+    toast.classList.add("show");
+  }, 10);
+
+  // Trigger fade-out animation before removing
+  setTimeout(() => {
+    toast.classList.remove("show");
+    toast.classList.add("hide");
+  }, 2700);
+
+  // Remove element after fade-out completes
+  setTimeout(() => toast.remove(), 3000);
+}
+
 function hasVoted(id: number): boolean {
   return !!localStorage.getItem(`voted-${id}`);
+}
+
+function handleVote(id: number, type: "positive" | "negative", indexToEdit: number, votesContainer: Element | null): void {
+  if (hasVoted(id)) {
+    showToast("You have already voted 🧐");
+    return;
+  }
+
+  if (indexToEdit !== -1) {
+    const currentVotes = type === "positive" ? facts[indexToEdit].votes_positive : facts[indexToEdit].votes_negative;
+    updateFact(id, type, currentVotes);
+    
+    if (type === "positive") {
+      facts[indexToEdit].votes_positive += 1;
+    } else {
+      facts[indexToEdit].votes_negative += 1;
+    }
+    
+    const votesText = votesContainer?.querySelector("p");
+    if (votesText) {
+      votesText.textContent = String(Number(votesText.textContent) + 1);
+    }
+    
+    localStorage.setItem(`voted-${id}`, "true");
+  }
 }
 
 //FORM HANDLING
@@ -234,8 +263,12 @@ async function createFact(factData:FactInsert) {
 categoriesSection.addEventListener("click", (event:MouseEvent)=>{
   let target = event.target as HTMLButtonElement
   if (target.matches(".categories-button")){
+    document.querySelectorAll(".active").forEach((el)=>el.classList.remove("active"))
+    target.classList.add("active")
+    console.log(target.classList)
     filterByCategory(target.dataset.category as Category)
   }
+  factSection.scrollIntoView({ behavior: "smooth" });
 })
 
 factsBar.addEventListener("click", (event:MouseEvent)=>{

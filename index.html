@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./src/styles.css">
   <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <title>Did you know</title>
 </head>
 
@@ -14,7 +16,10 @@
     <header>
       <nav>
         <div class="logo">
-          Did you know?
+<span class="material-symbols-outlined">
+  book
+</span>
+          <h1>Did you know?</h1>
         </div>
         <button class="share-fact" id="open-btn">Share a fact</button>
       </nav>
@@ -22,15 +27,15 @@
     <main>
       <aside class="categories">
         <h3>Categories</h3>
-        <button class="categories-button all" data-category="all">All</button>
-        <button class="categories-button technology" data-category="technology">Technology</button>
-        <button class="categories-button science" data-category="science">Science</button>
-        <button class="categories-button finance" data-category="finance">Finance</button>
-        <button class="categories-button society" data-category="society">Society</button>
-        <button class="categories-button entertainment" data-category="entertainment">Entertainment</button>
-        <button class="categories-button health" data-category="health">Health</button>
-        <button class="categories-button history" data-category="history">History</button>
-        <button class="categories-button news" data-category="news">News</button>
+        <button class="categories-button active" data-category="all">All</button>
+        <button class="categories-button" data-category="technology">Technology</button>
+        <button class="categories-button" data-category="science">Science</button>
+        <button class="categories-button" data-category="finance">Finance</button>
+        <button class="categories-button" data-category="society">Society</button>
+        <button class="categories-button" data-category="entertainment">Entertainment</button>
+        <button class="categories-button" data-category="health">Health</button>
+        <button class="categories-button" data-category="history">History</button>
+        <button class="categories-button" data-category="news">News</button>
       </aside>
       <section class="facts">
         <div class="facts-bar">

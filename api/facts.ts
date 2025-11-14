@@ -6,9 +6,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  // When a web browser needs to make a cross-origin request that isn't a "simple"
-  //  request (like POST with JSON data), it first sends an OPTIONS request to check
-  //  if the actual request is allowed. This is called a "preflight" request.
   if (req.method == "OPTIONS") {
     return res.status(200).end
   }
@@ -16,7 +13,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY as string
 
     const supabase = createClient<Database>(supabaseUrl, supabaseKey)
-    //Internal server error=>500, 405=>method not allowed, 200=>Ok
     if(req.method=='GET'){
         try{
             const {data, error} = await supabase
