@@ -25,7 +25,7 @@ if((textArea instanceof HTMLTextAreaElement) && (characterCounter instanceof HTM
         
         characterCounter.textContent = `${remainingChars}`;
 
-        characterCounter.style.color = remainingChars < 100 ? "red" : "white";
+        characterCounter.style.color = remainingChars < 100 ? "red" : "black";
     });
 }
 

@@ -61,9 +61,8 @@ html {
 
 .container {
   max-width: 1200px;
-  margin: 2dvh auto;
+  margin: 4dvh auto;
   padding: 0 25px;
-  max-height: auto;
 
 }
 
@@ -173,6 +172,14 @@ main {
 .facts {
   margin-bottom: 50px;
 }
+.items{
+  height: 520px;
+  width:100%;
+  overflow-y: scroll;
+  overflow-x: auto;
+  overflow: auto;
+  padding: 10px;
+}
 
 .facts-bar {
   min-width: 100px;
@@ -270,7 +277,7 @@ main {
   font-weight: 600;
   border-radius: 8px;
   margin-bottom: 12px;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
 }
 
@@ -287,13 +294,19 @@ main {
   margin-right: 5px;
   text-decoration: none;
   color: var(--text-secondary);
+  transition: color 0.2s ease;
 }
 
-.facts-item-bar-source:hover {
+.facts-item-bar-source:hover{
   cursor: pointer;
-  color: var(--text-highlight);
-  filter: brightness(130%);
+}
 
+.facts-item-bar-source:hover .source {
+  color: var(--text-highlight);
+}
+
+.facts-item-bar-source:hover .source-icon {
+  stroke: var(--text-highlight);
 }
 
 .facts-item-reactions-votes {
@@ -330,6 +343,11 @@ main {
   .categories-button {
     width: 100%;
     max-width: none;
+  }
+
+  .items {
+    height: auto;
+    overflow: visible;
   }
 
 }

@@ -3,30 +3,35 @@ import type { Database } from '../src/types/supabase'
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method == "OPTIONS") {
-    return res.status(200).end
-  }
-    const supabaseUrl = process.env.VITE_SUPABASE_URL as string
-    const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY as string
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-    const supabase = createClient<Database>(supabaseUrl, supabaseKey)
-    if(req.method=='GET'){
-        try{
-            const {data, error} = await supabase
-            .from('facts')
-            .select('*')
-            .order('created_at', {ascending:true})
-            if(error){
-                return res.status(500).json({error:error.message})
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();
+    }
+
+    const supabaseUrl = process.env.VITE_SUPABASE_URL as string;
+    const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY as string;
+
+    const supabase = createClient<Database>(supabaseUrl, supabaseKey);
+
+    if (req.method === 'GET') {
+        try {
+            const { data, error } = await supabase
+                .from('facts')
+                .select('*')
+                .order('created_at', { ascending: true })
+
+            if (error) {
+                return res.status(500).json({ error: error.message });
             }
-            return res.status(200).json(data)
-        }
-        catch(error){
-            return res.status(500).json({error:'Failed to fetch'})
+
+            return res.status(200).json(data);
+        } catch (error) {
+            return res.status(500).json({ error: 'Failed to fetch' });
         }
     }
-    return res.status(405).json({message:'Method not allowed'})
+
+    return res.status(405).json({ message: 'Method not allowed' });
 }

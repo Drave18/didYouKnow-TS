@@ -273,6 +273,7 @@ categoriesSection.addEventListener("click", (event:MouseEvent)=>{
     target.classList.add("active")
     console.log(target.classList)
     filterByCategory(target.dataset.category as Category)
+    items.scrollTop = 0; // Reset scroll to top
   }
   factSection.scrollIntoView({ behavior: "smooth" });
 })
